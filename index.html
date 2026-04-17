@@ -1,311 +1,874 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FBA Finder Pro</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f1115;
-    color: white;
-}
-
-/* HEADER */
-.header {
-    background: #151821;
-    padding: 20px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    border-bottom: 1px solid #222;
-}
-
-/* CONTAINER */
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-}
-
-/* CARD */
-.card {
-    background: #1a1d26;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-}
-
-/* TITRE */
-h2 {
-    margin-bottom: 15px;
-}
-
-/* INPUT */
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: none;
-    background: #2a2e3a;
-    color: white;
-}
-
-/* BOUTON */
-button {
-    width: 100%;
-    padding: 14px;
-    border-radius: 8px;
-    border: none;
-    background: linear-gradient(90deg, #4f8cff, #6a5cff);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-button:hover {
-    transform: scale(1.02);
-    opacity: 0.9;
-}
-
-/* RESULT */
-.result {
-    margin-top: 10px;
-    padding: 10px;
-    background: #111;
-    border-radius: 8px;
-}
-
-/* MOBILE */
-@media(max-width: 600px){
-    .container {
-        padding: 10px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FBA Finder Pro</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
     }
-}
-</style>
-</head>
 
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0d12;
+      color: #ffffff;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(13, 16, 23, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #1e2431;
+    }
+
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #c8d1e6;
+      background: #161b24;
+      border: 1px solid #232b3b;
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .nav a:hover {
+      color: white;
+      border-color: #4f8cff;
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 34px 20px 20px;
+    }
+
+    .hero-box {
+      background: linear-gradient(135deg, #121722, #1c2433);
+      border: 1px solid #263045;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+    }
+
+    .hero-title {
+      font-size: 34px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .hero-sub {
+      color: #b5bfd6;
+      font-size: 15px;
+      max-width: 850px;
+      line-height: 1.5;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .hero-stat {
+      background: #0f141d;
+      border: 1px solid #20293a;
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .hero-stat-label {
+      font-size: 12px;
+      color: #9daccc;
+      margin-bottom: 6px;
+    }
+
+    .hero-stat-value {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin: 10px 0 14px;
+      font-weight: bold;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #151a24, #10141c);
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid #232b3b;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .small-text {
+      color: #aeb8cf;
+      font-size: 13px;
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      border: 1px solid #2a3447;
+      background: #202735;
+      color: white;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #4f8cff;
+      box-shadow: 0 0 0 2px rgba(79, 140, 255, 0.12);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(90deg, #4f8cff, #6a5cff);
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .promo-btn {
+      background: linear-gradient(90deg, #00c853, #64dd17);
+    }
+
+    .gold-btn {
+      background: linear-gradient(90deg, #ffca28, #ff9800);
+      color: #111;
+    }
+
+    .dark-btn {
+      background: linear-gradient(90deg, #313848, #232936);
+    }
+
+    .red-btn {
+      background: linear-gradient(90deg, #ff5252, #ff1744);
+    }
+
+    .result {
+      margin-top: 10px;
+      padding: 14px;
+      background: #0d1118;
+      border-radius: 12px;
+      overflow-x: auto;
+      border: 1px solid #20293a;
+    }
+
+    .warning {
+      color: #ffd166;
+      font-size: 13px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .stat-box {
+      background: #111722;
+      border: 1px solid #20293a;
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-box .label {
+      font-size: 12px;
+      color: #a4b1cb;
+      margin-bottom: 6px;
+    }
+
+    .stat-box .value {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .quick-tools {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .quick-btn {
+      background: #141a25;
+      border: 1px solid #253047;
+      color: white;
+      padding: 14px;
+      border-radius: 14px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .quick-btn:hover {
+      border-color: #4f8cff;
+      transform: translateY(-1px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+      min-width: 860px;
+    }
+
+    th, td {
+      padding: 11px;
+      text-align: center;
+      border-bottom: 1px solid #2b354a;
+    }
+
+    th {
+      background: #1b2230;
+      font-size: 14px;
+    }
+
+    td {
+      font-size: 14px;
+    }
+
+    .best-deal {
+      background: #ffd700;
+      color: black;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: bold;
+      display: inline-block;
+      font-size: 12px;
+    }
+
+    .good-deal {
+      background: #1f2a3a;
+      color: #8ab4ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-block;
+      font-size: 12px;
+    }
+
+    .profit-positive {
+      color: #00e676;
+      font-weight: bold;
+    }
+
+    .profit-negative {
+      color: #ff5252;
+      font-weight: bold;
+    }
+
+    .footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 20px 30px;
+      color: #94a2bf;
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .cards,
+      .grid-2,
+      .grid-3,
+      .stats,
+      .quick-tools,
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-title {
+        font-size: 28px;
+      }
+
+      .topbar-inner {
+        padding: 12px;
+      }
+
+      .container,
+      .hero {
+        padding: 14px;
+      }
+
+      .card,
+      .hero-box {
+        padding: 16px;
+      }
+
+      .nav {
+        width: 100%;
+      }
+
+      .nav a {
+        flex: 1;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
 <body>
 
-<div class="header">🚀 FBA Finder Pro</div>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">🚀 FBA Finder Pro</div>
+      <div class="nav">
+        <a href="#recherche">Recherche</a>
+        <a href="#scanner">Scanner</a>
+        <a href="#rentabilite">Rentabilité</a>
+        <a href="#outils">Outils</a>
+      </div>
+    </div>
+  </div>
 
-<div class="container">
+  <div class="hero">
+    <div class="hero-box">
+      <div class="hero-title">Ton tableau de bord FBA</div>
+      <div class="hero-sub">
+        Recherche rapide sur les gros sites, scanner promos, calcul de profit, accès Amazon / Keepa / Resell Corner et analyse produit en 1 clic.
+      </div>
 
-    <!-- RECHERCHE -->
-    <div class="card">
-       <h2>🔎 Recherche produit</h2>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-label">Mode</div>
+          <div class="hero-stat-value">PRO</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Marchés</div>
+          <div class="hero-stat-value">FR / EU</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Outils</div>
+          <div class="hero-stat-value">3+</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Version</div>
+          <div class="hero-stat-value">Premium</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<input type="text" id="keyword" placeholder="Ex : lego">
+  <div class="container">
 
-<select id="marketplace">
-    <option>Amazon</option>
-    <option>Cdiscount</option>
-    <option>Fnac</option>
-</select>
+    <div class="section-title" id="recherche">🔎 Recherche & Scanner</div>
 
-<input type="number" id="minProfit" placeholder="Profit minimum (€)">
-<input type="number" id="maxBuyPrice" placeholder="Prix achat max (€)">
-<input type="number" id="minRoi" placeholder="ROI minimum (%)">
+    <div class="cards">
+      <div class="card" id="scanner">
+        <h2>Recherche produit</h2>
+        <div class="small-text">Choisis un magasin ou un site e-commerce puis ouvre directement la recherche.</div>
 
-<button onclick="search()">Rechercher</button>
+        <input type="text" id="keyword" placeholder="Ex : lego, coffret manga, shampoing..." />
 
-<button onclick="scanDeals()" style="margin-top:10px;background:linear-gradient(90deg,#00c853,#64dd17)">
-🔥 Scanner promos
-</button>
+        <select id="marketplace">
+          <option>Amazon</option>
+          <option>Cdiscount</option>
+          <option>Fnac</option>
+          <option>Darty</option>
+          <option>Boulanger</option>
+          <option>Rue du Commerce</option>
+          <option>Rakuten</option>
+          <option>eBay</option>
+          <option>AliExpress</option>
+          <option>Temu</option>
+          <option>Shein</option>
+          <option>Leboncoin</option>
+          <option>Vinted</option>
+          <option>Zalando</option>
+          <option>ManoMano</option>
+          <option>Leroy Merlin</option>
+          <option>Castorama</option>
+          <option>Brico Dépôt</option>
+          <option>Decathlon</option>
+          <option>Intersport</option>
+          <option>Action</option>
+          <option>La Redoute</option>
+          <option>Conforama</option>
+          <option>But</option>
+          <option>IKEA</option>
+          <option>King Jouet</option>
+          <option>JouéClub</option>
+          <option>Maxi Toys</option>
+          <option>Micromania</option>
+          <option>Cultura</option>
+          <option>E.Leclerc</option>
+          <option>Carrefour</option>
+          <option>Auchan</option>
+          <option>Intermarché</option>
+          <option>Super U</option>
+          <option>Monoprix</option>
+          <option>Casino</option>
+          <option>Lidl</option>
+          <option>Aldi</option>
+          <option>Picard</option>
+          <option>Grand Frais</option>
+          <option>Costco</option>
+          <option>Sephora</option>
+          <option>Nocibé</option>
+          <option>Marionnaud</option>
+          <option>Notino</option>
+          <option>Pharmacie / Parapharmacie</option>
+          <option>Google Shopping</option>
+          <option>Autre site e-commerce</option>
+        </select>
 
-<div class="result" id="searchResult">Résultats ici...</div>
+        <div class="grid-3">
+          <input type="number" id="minProfit" placeholder="Profit minimum (€)" />
+          <input type="number" id="maxBuyPrice" placeholder="Prix achat max (€)" />
+          <input type="number" id="minRoi" placeholder="ROI minimum (%)" />
+        </div>
 
-    <!-- CALCUL -->
-    <div class="card">
-       <h2>💰 Calcul rentabilité</h2>
+        <button onclick="searchProduct()">Rechercher sur le site choisi</button>
+        <button class="promo-btn" onclick="scanDeals()">🔥 Scanner promos</button>
+        <button class="red-btn" onclick="generateMoreDeals()">➕ Générer plus d'opportunités</button>
 
-<input type="number" id="buyPrice" placeholder="Prix achat">
-<input type="number" id="amazonPrice" placeholder="Prix Amazon">
-<input type="number" id="amazonFees" placeholder="Frais Amazon">
+        <div class="warning">
+          Scanner promos = mode démo premium. Pour de vraies promos live, il faudra connecter de vraies sources plus tard.
+        </div>
 
-<button onclick="calculateProfit()">Calculer</button>
+        <div class="result" id="searchResult">Résultats ici...</div>
+      </div>
 
-<div class="result" id="calcResult">Résultat...</div>
+      <div class="card">
+        <h2>⚡ ASIN rapide</h2>
+        <div class="small-text">Entre un ASIN ou un nom produit pour ouvrir rapidement tes outils.</div>
+
+        <input type="text" id="toolInput" placeholder="ASIN ou nom produit" />
+
+        <div class="quick-tools">
+          <div class="quick-btn" onclick="openAmazonSearch()">Amazon</div>
+          <div class="quick-btn" onclick="openKeepa()">Keepa</div>
+          <div class="quick-btn" onclick="openResell()">Resell Corner</div>
+          <div class="quick-btn" onclick="openFullAnalysis()">Analyse complète</div>
+        </div>
+
+        <div class="result" style="margin-top:16px;">
+          Ouvre Amazon + Keepa + Resell Corner en 1 clic pour aller plus vite.
+        </div>
+      </div>
     </div>
 
-<script>
-function search() {
-    const keyword = document.getElementById("keyword").value || "Produit";
-    const marketplace = document.getElementById("marketplace").value;
-    const result = document.getElementById("searchResult");
+    <div class="section-title" id="rentabilite">💰 Rentabilité</div>
 
-    result.innerHTML = `Recherche en cours sur ${marketplace} pour : <b>${keyword}</b>...`;
-}
+    <div class="card">
+      <h2>Calculateur FBA</h2>
+      <div class="small-text">Entre ton prix d’achat, le prix Amazon et les frais pour voir ton profit net.</div>
 
-function scanDeals() {
-    const minProfit = parseFloat(document.getElementById("minProfit").value) || 0;
-    const maxBuyPrice = parseFloat(document.getElementById("maxBuyPrice").value) || 9999;
-    const minRoi = parseFloat(document.getElementById("minRoi").value) || 0;
+      <div class="grid-3">
+        <input type="number" id="buyPrice" placeholder="Prix achat" />
+        <input type="number" id="amazonPrice" placeholder="Prix Amazon" />
+        <input type="number" id="amazonFees" placeholder="Frais Amazon" />
+      </div>
 
-    const result = document.getElementById("searchResult");
-    result.innerHTML = "Scan en cours... 🔍";
+      <button class="gold-btn" onclick="calculateProfit()">Calculer</button>
 
-    const deals = [
-        { name: "Lego Set", buy: 15, sell: 29.99, fees: 7 },
-        { name: "Coffret Manga", buy: 22, sell: 39.99, fees: 8 },
-        { name: "Shampoing Lot", buy: 9.90, sell: 21.99, fees: 5 },
-        { name: "Crème soin", buy: 11, sell: 24.50, fees: 6 }
+      <div class="result" id="calcResult">Résultat...</div>
+    </div>
+
+    <div class="section-title" id="outils">🧰 Outils produit</div>
+
+    <div class="card">
+      <h2>Accès direct</h2>
+      <div class="small-text">Utilise les boutons ci-dessous avec le champ ASIN rapide plus haut.</div>
+
+      <div class="grid-2">
+        <button class="dark-btn" onclick="openAmazonSearch()">Voir sur Amazon</button>
+        <button class="dark-btn" onclick="openKeepa()">Voir sur Keepa</button>
+      </div>
+
+      <div class="grid-2">
+        <button class="dark-btn" onclick="openResell()">Voir sur Resell Corner</button>
+        <button class="gold-btn" onclick="openFullAnalysis()">⚡ Analyse complète</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    FBA Finder Pro — version premium locale.
+  </div>
+
+  <script>
+    let demoDeals = [
+      { name: "Lego Set", buy: 15, sell: 29.99, fees: 7, source: "Amazon" },
+      { name: "Coffret Manga", buy: 22, sell: 39.99, fees: 8, source: "Fnac" },
+      { name: "Shampoing Lot", buy: 9.90, sell: 21.99, fees: 5, source: "Carrefour" },
+      { name: "Crème soin", buy: 11, sell: 24.50, fees: 6, source: "E.Leclerc" },
+      { name: "Jeu de société", buy: 18, sell: 34.99, fees: 7.50, source: "Cdiscount" },
+      { name: "Lot hygiène", buy: 8.50, sell: 18.90, fees: 4.80, source: "Auchan" },
+      { name: "Figurine collector", buy: 14.99, sell: 31.50, fees: 6.80, source: "Micromania" },
+      { name: "Jouet éducatif", buy: 12.00, sell: 26.99, fees: 5.90, source: "King Jouet" },
+      { name: "Casque gaming", buy: 24.99, sell: 44.99, fees: 9.20, source: "Boulanger" },
+      { name: "Set beauté", buy: 13.20, sell: 27.90, fees: 6.10, source: "Sephora" },
+      { name: "Pack entretien", buy: 7.90, sell: 17.99, fees: 4.40, source: "Intermarché" },
+      { name: "Lot cuisine", buy: 16.90, sell: 33.90, fees: 7.20, source: "Super U" }
     ];
 
-    setTimeout(() => {
-       let html = `
-<table style="width:100%;border-collapse:collapse;color:white;">
-<tr style="background:#222;">
-    <th>Produit</th>
-    <th>Achat</th>
-    <th>Revente</th>
-    <th>Frais</th>
-    <th>Profit</th>
-    <th>ROI</th>
-</tr>
-`;
+    function searchProduct() {
+      const keyword = document.getElementById("keyword").value.trim();
+      const marketplace = document.getElementById("marketplace").value;
+      const result = document.getElementById("searchResult");
 
-deals.forEach(deal => {
-    const profit = deal.sell - deal.buy - deal.fees;
-    const roi = (profit / deal.buy) * 100;
+      if (!keyword) {
+        result.innerHTML = "Entre un produit pour lancer la recherche.";
+        return;
+      }
 
-    if (profit >= minProfit && deal.buy <= maxBuyPrice && roi >= minRoi) {
-        html += `
-        <tr style="text-align:center;border-bottom:1px solid #333;">
-            <td>${deal.name}</td>
-            <td>${deal.buy.toFixed(2)}€</td>
-            <td>${deal.sell.toFixed(2)}€</td>
-            <td>${deal.fees.toFixed(2)}€</td>
-            <td style="color:#00e676;">${profit.toFixed(2)}€</td>
-            <td>${roi.toFixed(1)}%</td>
-        </tr>
-        `;
+      const urls = {
+        "Amazon": "https://www.amazon.fr/s?k=",
+        "Cdiscount": "https://www.cdiscount.com/search/10/",
+        "Fnac": "https://www.fnac.com/SearchResult/ResultList.aspx?Search=",
+        "Darty": "https://www.darty.com/nav/recherche/",
+        "Boulanger": "https://www.boulanger.com/resultats?tr=",
+        "Rue du Commerce": "https://www.rueducommerce.fr/recherche/",
+        "Rakuten": "https://fr.shopping.rakuten.com/s/",
+        "eBay": "https://www.ebay.fr/sch/i.html?_nkw=",
+        "AliExpress": "https://fr.aliexpress.com/wholesale?SearchText=",
+        "Temu": "https://www.temu.com/search_result.html?search_key=",
+        "Shein": "https://fr.shein.com/pdsearch/",
+        "Leboncoin": "https://www.leboncoin.fr/recherche?text=",
+        "Vinted": "https://www.vinted.fr/catalog?search_text=",
+        "Zalando": "https://www.zalando.fr/catalogue/?q=",
+        "ManoMano": "https://www.manomano.fr/recherche/",
+        "Leroy Merlin": "https://www.leroymerlin.fr/recherche/?q=",
+        "Castorama": "https://www.castorama.fr/recherche?term=",
+        "Brico Dépôt": "https://www.bricodepot.fr/search?text=",
+        "Decathlon": "https://www.decathlon.fr/search?Ntt=",
+        "Intersport": "https://www.intersport.fr/recherche/",
+        "Action": "https://www.action.com/fr-fr/search/?q=",
+        "La Redoute": "https://www.laredoute.fr/ppdp/search.aspx?kwrd=",
+        "Conforama": "https://www.conforama.fr/recherche?text=",
+        "But": "https://www.but.fr/resultat-recherche/?q=",
+        "IKEA": "https://www.ikea.com/fr/fr/search/?q=",
+        "King Jouet": "https://www.king-jouet.com/recherche?text=",
+        "JouéClub": "https://www.joueclub.fr/catalogsearch/result/?q=",
+        "Maxi Toys": "https://www.maxitoys.fr/catalogsearch/result/?q=",
+        "Micromania": "https://www.micromania.fr/recherche?text=",
+        "Cultura": "https://www.cultura.com/search/results?search_query=",
+        "E.Leclerc": "https://www.e.leclerc/recherche?q=",
+        "Carrefour": "https://www.carrefour.fr/s?q=",
+        "Auchan": "https://www.auchan.fr/recherche?text=",
+        "Intermarché": "https://www.google.com/search?q=site%3Aintermarche.com+",
+        "Super U": "https://www.google.com/search?q=site%3Acoursesu.com+",
+        "Monoprix": "https://www.google.com/search?q=site%3Amonoprix.fr+",
+        "Casino": "https://www.google.com/search?q=site%3Acasino.fr+",
+        "Lidl": "https://www.google.com/search?q=site%3Alidl.fr+",
+        "Aldi": "https://www.google.com/search?q=site%3Aaldi.fr+",
+        "Picard": "https://www.picard.fr/recherche?q=",
+        "Grand Frais": "https://www.google.com/search?q=site%3Agrandfrais.com+",
+        "Costco": "https://www.costco.fr/search?text=",
+        "Sephora": "https://www.sephora.fr/recherche?text=",
+        "Nocibé": "https://www.nocibe.fr/search?text=",
+        "Marionnaud": "https://www.marionnaud.fr/search?text=",
+        "Notino": "https://www.notino.fr/search.asp?exps=",
+        "Pharmacie / Parapharmacie": "https://www.google.com/search?q=parapharmacie+",
+        "Google Shopping": "https://www.google.com/search?tbm=shop&q=",
+        "Autre site e-commerce": "https://www.google.com/search?q="
+      };
+
+      const baseUrl = urls[marketplace] || "https://www.google.com/search?q=";
+      const finalUrl = baseUrl + encodeURIComponent(keyword);
+
+      result.innerHTML = "Recherche ouverte sur <b>" + marketplace + "</b> pour : <b>" + keyword + "</b>";
+      window.open(finalUrl, "_blank");
     }
-});
 
-html += "</table>";
+    function buildDealsFromKeyword(keyword) {
+      const baseKeywords = keyword ? keyword : "Produit";
+      const brands = [
+        baseKeywords,
+        baseKeywords + " premium",
+        baseKeywords + " lot",
+        baseKeywords + " coffret",
+        baseKeywords + " édition spéciale",
+        baseKeywords + " pack x2",
+        baseKeywords + " promo",
+        baseKeywords + " bundle"
+      ];
 
-        result.innerHTML = html || "Aucune promo trouvée avec tes filtres.";
-    }, 1200);
-}
+      const stores = [
+        "Amazon", "Cdiscount", "Fnac", "Carrefour",
+        "E.Leclerc", "Intermarché", "Auchan", "Super U",
+        "Boulanger", "Micromania", "Action", "Rakuten"
+      ];
 
-function calculateProfit() {
-    const buyPrice = parseFloat(document.getElementById("buyPrice").value) || 0;
-    const amazonPrice = parseFloat(document.getElementById("amazonPrice").value) || 0;
-    const amazonFees = parseFloat(document.getElementById("amazonFees").value) || 0;
+      let generated = [];
 
-    const profit = amazonPrice - buyPrice - amazonFees;
-    const roi = buyPrice > 0 ? (profit / buyPrice) * 100 : 0;
+      for (let i = 0; i < 24; i++) {
+        const buy = +(6 + Math.random() * 30).toFixed(2);
+        const multiplier = 1.42 + Math.random() * 1.20;
+        const sell = +(buy * multiplier).toFixed(2);
+        const fees = +(3.8 + Math.random() * 7).toFixed(2);
 
-    const result = document.getElementById("calcResult");
+        generated.push({
+          name: brands[i % brands.length] + " " + (i + 1),
+          buy: buy,
+          sell: sell,
+          fees: fees,
+          source: stores[i % stores.length]
+        });
+      }
 
-    result.innerHTML = `
-        💰 Profit net : <b>${profit.toFixed(2)}€</b><br>
-        📈 ROI : <b>${roi.toFixed(1)}%</b>
-    `;
-}
-<script>
-function search() {
-    const keyword = document.getElementById("keyword").value || "Produit";
-    const marketplace = document.getElementById("marketplace").value;
-    const result = document.getElementById("searchResult");
+      demoDeals = generated;
+      scanDeals();
+    }
 
-    result.innerHTML = `Recherche en cours sur ${marketplace} pour : <b>${keyword}</b>...`;
-}
+    function generateMoreDeals() {
+      const keyword = document.getElementById("keyword").value.trim();
+      buildDealsFromKeyword(keyword);
+    }
 
-function scanDeals() {
-    const minProfit = parseFloat(document.getElementById("minProfit").value) || 0;
-    const maxBuyPrice = parseFloat(document.getElementById("maxBuyPrice").value) || 9999;
-    const minRoi = parseFloat(document.getElementById("minRoi").value) || 0;
+    function scanDeals() {
+      const minProfit = parseFloat(document.getElementById("minProfit").value) || 0;
+      const maxBuyPrice = parseFloat(document.getElementById("maxBuyPrice").value) || 9999;
+      const minRoi = parseFloat(document.getElementById("minRoi").value) || 0;
 
-    const result = document.getElementById("searchResult");
-    result.innerHTML = "Scan en cours... 🔍";
+      const result = document.getElementById("searchResult");
+      result.innerHTML = "Scan en cours... 🔍";
 
-    const deals = [
-        { name: "Lego Set", buy: 15, sell: 29.99, fees: 7 },
-        { name: "Coffret Manga", buy: 22, sell: 39.99, fees: 8 },
-        { name: "Shampoing Lot", buy: 9.90, sell: 21.99, fees: 5 },
-        { name: "Crème soin", buy: 11, sell: 24.50, fees: 6 }
-    ];
-
-    setTimeout(() => {
+      setTimeout(() => {
         let filteredDeals = [];
 
-        deals.forEach(deal => {
-            const profit = deal.sell - deal.buy - deal.fees;
-            const roi = (profit / deal.buy) * 100;
+        for (let i = 0; i < demoDeals.length; i++) {
+          const deal = demoDeals[i];
+          const profit = deal.sell - deal.buy - deal.fees;
+          const roi = (profit / deal.buy) * 100;
 
-            if (profit >= minProfit && deal.buy <= maxBuyPrice && roi >= minRoi) {
-                filteredDeals.push({
-                    ...deal,
-                    profit,
-                    roi
-                });
-            }
-        });
+          if (profit >= minProfit && deal.buy <= maxBuyPrice && roi >= minRoi) {
+            filteredDeals.push({
+              name: deal.name,
+              buy: deal.buy,
+              sell: deal.sell,
+              fees: deal.fees,
+              profit: profit,
+              roi: roi,
+              source: deal.source
+            });
+          }
+        }
 
         filteredDeals.sort((a, b) => b.profit - a.profit);
 
         if (filteredDeals.length === 0) {
-            result.innerHTML = "Aucune promo trouvée avec tes filtres.";
-            return;
+          result.innerHTML = "Aucune promo trouvée avec tes filtres.";
+          return;
         }
 
+        const best = filteredDeals[0];
+        const avgProfit = filteredDeals.reduce((sum, d) => sum + d.profit, 0) / filteredDeals.length;
+        const avgRoi = filteredDeals.reduce((sum, d) => sum + d.roi, 0) / filteredDeals.length;
+
         let html = `
-        <table style="width:100%;border-collapse:collapse;color:white;">
-        <tr style="background:#222;">
-            <th style="padding:10px;">Produit</th>
-            <th style="padding:10px;">Achat</th>
-            <th style="padding:10px;">Revente</th>
-            <th style="padding:10px;">Frais</th>
-            <th style="padding:10px;">Profit</th>
-            <th style="padding:10px;">ROI</th>
-            <th style="padding:10px;">Statut</th>
-        </tr>
+          <div class="stats">
+            <div class="stat-box">
+              <div class="label">Deals trouvés</div>
+              <div class="value">${filteredDeals.length}</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Meilleur profit</div>
+              <div class="value profit-positive">${best.profit.toFixed(2)}€</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">ROI moyen</div>
+              <div class="value">${avgRoi.toFixed(1)}%</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Profit moyen</div>
+              <div class="value">${avgProfit.toFixed(2)}€</div>
+            </div>
+          </div>
+
+          <table>
+            <tr>
+              <th>Produit</th>
+              <th>Source</th>
+              <th>Achat</th>
+              <th>Revente</th>
+              <th>Frais</th>
+              <th>Profit</th>
+              <th>ROI</th>
+              <th>Statut</th>
+            </tr>
         `;
 
-        filteredDeals.forEach((deal, index) => {
-            html += `
-            <tr style="text-align:center;border-bottom:1px solid #333;">
-                <td style="padding:10px;">${deal.name}</td>
-                <td style="padding:10px;">${deal.buy.toFixed(2)}€</td>
-                <td style="padding:10px;">${deal.sell.toFixed(2)}€</td>
-                <td style="padding:10px;">${deal.fees.toFixed(2)}€</td>
-                <td style="padding:10px;color:#00e676;"><b>${deal.profit.toFixed(2)}€</b></td>
-                <td style="padding:10px;"><b>${deal.roi.toFixed(1)}%</b></td>
-                <td style="padding:10px;">
-                    ${index === 0 
-                        ? '<span style="background:#ffd700;color:black;padding:5px 10px;border-radius:20px;font-weight:bold;">BEST DEAL</span>'
-                        : '<span style="background:#1f2a3a;color:#8ab4ff;padding:5px 10px;border-radius:20px;">Bon deal</span>'
-                    }
-                </td>
+        for (let i = 0; i < filteredDeals.length; i++) {
+          const deal = filteredDeals[i];
+
+          html += `
+            <tr>
+              <td>${deal.name}</td>
+              <td>${deal.source}</td>
+              <td>${deal.buy.toFixed(2)}€</td>
+              <td>${deal.sell.toFixed(2)}€</td>
+              <td>${deal.fees.toFixed(2)}€</td>
+              <td class="${deal.profit >= 0 ? "profit-positive" : "profit-negative"}">${deal.profit.toFixed(2)}€</td>
+              <td><b>${deal.roi.toFixed(1)}%</b></td>
+              <td>
+                ${
+                  i === 0
+                    ? '<span class="best-deal">BEST DEAL</span>'
+                    : '<span class="good-deal">Bon deal</span>'
+                }
+              </td>
             </tr>
-            `;
-        });
+          `;
+        }
 
         html += `</table>`;
         result.innerHTML = html;
-    }, 1200);
-}
+      }, 700);
+    }
 
-function calculateProfit() {
-    const buyPrice = parseFloat(document.getElementById("buyPrice").value) || 0;
-    const amazonPrice = parseFloat(document.getElementById("amazonPrice").value) || 0;
-    const amazonFees = parseFloat(document.getElementById("amazonFees").value) || 0;
+    function calculateProfit() {
+      const buyPrice = parseFloat(document.getElementById("buyPrice").value) || 0;
+      const amazonPrice = parseFloat(document.getElementById("amazonPrice").value) || 0;
+      const amazonFees = parseFloat(document.getElementById("amazonFees").value) || 0;
 
-    const profit = amazonPrice - buyPrice - amazonFees;
-    const roi = buyPrice > 0 ? (profit / buyPrice) * 100 : 0;
+      const profit = amazonPrice - buyPrice - amazonFees;
+      const roi = buyPrice > 0 ? (profit / buyPrice) * 100 : 0;
 
-    const result = document.getElementById("calcResult");
+      const result = document.getElementById("calcResult");
 
-    result.innerHTML = `
-        💰 Profit net : <b>${profit.toFixed(2)}€</b><br>
+      result.innerHTML = `
+        💰 Profit net : <b class="${profit >= 0 ? "profit-positive" : "profit-negative"}">${profit.toFixed(2)}€</b><br><br>
         📈 ROI : <b>${roi.toFixed(1)}%</b>
-    `;
-}
-</script>
+      `;
+    }
+
+    function getToolValue() {
+      return document.getElementById("toolInput").value.trim();
+    }
+
+    function openKeepa() {
+      const query = getToolValue();
+
+      if (!query) {
+        alert("Entre un ASIN ou nom produit");
+        return;
+      }
+
+      const url = "https://keepa.com/#!search/" + encodeURIComponent(query);
+      window.open(url, "_blank");
+    }
+
+    function openResell() {
+      const query = getToolValue();
+
+      if (!query) {
+        alert("Entre un ASIN ou nom produit");
+        return;
+      }
+
+      const url = "https://www.resellcorner.com/search?q=" + encodeURIComponent(query);
+      window.open(url, "_blank");
+    }
+
+    function openAmazonSearch() {
+      const query = getToolValue();
+
+      if (!query) {
+        alert("Entre un ASIN ou nom produit");
+        return;
+      }
+
+      const url = "https://www.amazon.fr/s?k=" + encodeURIComponent(query);
+      window.open(url, "_blank");
+    }
+
+    function openFullAnalysis() {
+      const query = getToolValue();
+
+      if (!query) {
+        alert("Entre un ASIN ou nom produit");
+        return;
+      }
+
+      openAmazonSearch();
+      openKeepa();
+      openResell();
+    }
+  </script>
+
+</body>
+</html>
