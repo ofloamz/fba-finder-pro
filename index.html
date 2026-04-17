@@ -105,7 +105,10 @@ button:hover {
             <option>Cdiscount</option>
             <option>Fnac</option>
         </select>
-        <button>Rechercher</button>
+        <button onclick="search()">Rechercher</button>
+<button onclick="scanDeals()" style="margin-top:10px;background:linear-gradient(90deg,#00c853,#64dd17)">
+🔥 Scanner promos
+</button>
         <div class="result">Résultats ici...</div>
     </div>
 
@@ -123,3 +126,19 @@ button:hover {
 
 </body>
 </html>
+<script>
+function scanDeals() {
+    const result = document.querySelector(".result");
+
+    result.innerHTML = "Scan en cours... 🔍";
+
+    setTimeout(() => {
+        result.innerHTML = `
+        🔥 Produit trouvé : Lego Set<br>
+        💰 Achat : 15€<br>
+        🏷️ Revente : 29.99€<br>
+        📈 Profit estimé : +8€
+        `;
+    }, 1500);
+}
+</script>
