@@ -98,31 +98,106 @@ button:hover {
 
     <!-- RECHERCHE -->
     <div class="card">
-        <h2>🔍 Recherche produit</h2>
-        <input type="text" placeholder="Ex : lego">
-        <select>
-            <option>Amazon</option>
-            <option>Cdiscount</option>
-            <option>Fnac</option>
-        </select>
-        <button onclick="search()">Rechercher</button>
+       <h2>🔎 Recherche produit</h2>
+
+<input type="text" id="keyword" placeholder="Ex : lego">
+
+<select id="marketplace">
+    <option>Amazon</option>
+    <option>Cdiscount</option>
+    <option>Fnac</option>
+</select>
+
+<input type="number" id="minProfit" placeholder="Profit minimum (€)">
+<input type="number" id="maxBuyPrice" placeholder="Prix achat max (€)">
+<input type="number" id="minRoi" placeholder="ROI minimum (%)">
+
+<button onclick="search()">Rechercher</button>
+
 <button onclick="scanDeals()" style="margin-top:10px;background:linear-gradient(90deg,#00c853,#64dd17)">
 🔥 Scanner promos
 </button>
-        <div class="result">Résultats ici...</div>
-    </div>
+
+<div class="result" id="searchResult">Résultats ici...</div>
 
     <!-- CALCUL -->
     <div class="card">
-        <h2>💰 Calcul rentabilité</h2>
-        <input type="number" placeholder="Prix achat">
-        <input type="number" placeholder="Prix Amazon">
-        <input type="number" placeholder="Frais Amazon">
-        <button>Calculer</button>
-        <div class="result">Résultat...</div>
+       <h2>💰 Calcul rentabilité</h2>
+
+<input type="number" id="buyPrice" placeholder="Prix achat">
+<input type="number" id="amazonPrice" placeholder="Prix Amazon">
+<input type="number" id="amazonFees" placeholder="Frais Amazon">
+
+<button onclick="calculateProfit()">Calculer</button>
+
+<div class="result" id="calcResult">Résultat...</div>
     </div>
 
-</div>
+<script>
+function search() {
+    const keyword = document.getElementById("keyword").value || "Produit";
+    const marketplace = document.getElementById("marketplace").value;
+    const result = document.getElementById("searchResult");
+
+    result.innerHTML = `Recherche en cours sur ${marketplace} pour : <b>${keyword}</b>...`;
+}
+
+function scanDeals() {
+    const minProfit = parseFloat(document.getElementById("minProfit").value) || 0;
+    const maxBuyPrice = parseFloat(document.getElementById("maxBuyPrice").value) || 9999;
+    const minRoi = parseFloat(document.getElementById("minRoi").value) || 0;
+
+    const result = document.getElementById("searchResult");
+    result.innerHTML = "Scan en cours... 🔍";
+
+    const deals = [
+        { name: "Lego Set", buy: 15, sell: 29.99, fees: 7 },
+        { name: "Coffret Manga", buy: 22, sell: 39.99, fees: 8 },
+        { name: "Shampoing Lot", buy: 9.90, sell: 21.99, fees: 5 },
+        { name: "Crème soin", buy: 11, sell: 24.50, fees: 6 }
+    ];
+
+    setTimeout(() => {
+        let html = "";
+
+        deals.forEach(deal => {
+            const profit = deal.sell - deal.buy - deal.fees;
+            const roi = (profit / deal.buy) * 100;
+
+            if (profit >= minProfit && deal.buy <= maxBuyPrice && roi >= minRoi) {
+                html += `
+                <div style="margin-bottom:12px;padding:12px;background:#181b22;border-radius:8px;">
+                    <b>🔥 ${deal.name}</b><br>
+                    💰 Achat : ${deal.buy.toFixed(2)}€<br>
+                    🏷️ Revente : ${deal.sell.toFixed(2)}€<br>
+                    📦 Frais : ${deal.fees.toFixed(2)}€<br>
+                    ✅ Profit : <b>${profit.toFixed(2)}€</b><br>
+                    📈 ROI : <b>${roi.toFixed(1)}%</b>
+                </div>
+                `;
+            }
+        });
+
+        result.innerHTML = html || "Aucune promo trouvée avec tes filtres.";
+    }, 1200);
+}
+
+function calculateProfit() {
+    const buyPrice = parseFloat(document.getElementById("buyPrice").value) || 0;
+    const amazonPrice = parseFloat(document.getElementById("amazonPrice").value) || 0;
+    const amazonFees = parseFloat(document.getElementById("amazonFees").value) || 0;
+
+    const profit = amazonPrice - buyPrice - amazonFees;
+    const roi = buyPrice > 0 ? (profit / buyPrice) * 100 : 0;
+
+    const result = document.getElementById("calcResult");
+
+    result.innerHTML = `
+        💰 Profit net : <b>${profit.toFixed(2)}€</b><br>
+        📈 ROI : <b>${roi.toFixed(1)}%</b>
+    `;
+}
+</script>
 
 </body>
 </html>
