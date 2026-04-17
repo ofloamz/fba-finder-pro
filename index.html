@@ -158,25 +158,37 @@ function scanDeals() {
     ];
 
     setTimeout(() => {
-        let html = "";
+       let html = `
+<table style="width:100%;border-collapse:collapse;color:white;">
+<tr style="background:#222;">
+    <th>Produit</th>
+    <th>Achat</th>
+    <th>Revente</th>
+    <th>Frais</th>
+    <th>Profit</th>
+    <th>ROI</th>
+</tr>
+`;
 
-        deals.forEach(deal => {
-            const profit = deal.sell - deal.buy - deal.fees;
-            const roi = (profit / deal.buy) * 100;
+deals.forEach(deal => {
+    const profit = deal.sell - deal.buy - deal.fees;
+    const roi = (profit / deal.buy) * 100;
 
-            if (profit >= minProfit && deal.buy <= maxBuyPrice && roi >= minRoi) {
-                html += `
-                <div style="margin-bottom:12px;padding:12px;background:#181b22;border-radius:8px;">
-                    <b>🔥 ${deal.name}</b><br>
-                    💰 Achat : ${deal.buy.toFixed(2)}€<br>
-                    🏷️ Revente : ${deal.sell.toFixed(2)}€<br>
-                    📦 Frais : ${deal.fees.toFixed(2)}€<br>
-                    ✅ Profit : <b>${profit.toFixed(2)}€</b><br>
-                    📈 ROI : <b>${roi.toFixed(1)}%</b>
-                </div>
-                `;
-            }
-        });
+    if (profit >= minProfit && deal.buy <= maxBuyPrice && roi >= minRoi) {
+        html += `
+        <tr style="text-align:center;border-bottom:1px solid #333;">
+            <td>${deal.name}</td>
+            <td>${deal.buy.toFixed(2)}€</td>
+            <td>${deal.sell.toFixed(2)}€</td>
+            <td>${deal.fees.toFixed(2)}€</td>
+            <td style="color:#00e676;">${profit.toFixed(2)}€</td>
+            <td>${roi.toFixed(1)}%</td>
+        </tr>
+        `;
+    }
+});
+
+html += "</table>";
 
         result.innerHTML = html || "Aucune promo trouvée avec tes filtres.";
     }, 1200);
