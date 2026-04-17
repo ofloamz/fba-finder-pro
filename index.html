@@ -223,6 +223,10 @@
       background: linear-gradient(90deg, #ff5252, #ff1744);
     }
 
+    .pink-btn {
+      background: linear-gradient(90deg, #ff4fa3, #ff7a59);
+    }
+
     .result {
       margin-top: 10px;
       padding: 14px;
@@ -292,7 +296,7 @@
       width: 100%;
       border-collapse: collapse;
       color: white;
-      min-width: 860px;
+      min-width: 1200px;
     }
 
     th, td {
@@ -329,6 +333,15 @@
       font-size: 12px;
     }
 
+    .promo-only {
+      background: #2a1c3f;
+      color: #ffb3ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-block;
+      font-size: 12px;
+    }
+
     .profit-positive {
       color: #00e676;
       font-weight: bold;
@@ -337,6 +350,33 @@
     .profit-negative {
       color: #ff5252;
       font-weight: bold;
+    }
+
+    .product-link {
+      color: #7db3ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .product-link:hover {
+      text-decoration: underline;
+    }
+
+    .mini-link {
+      color: #c8d1e6;
+      text-decoration: none;
+      background: #182131;
+      border: 1px solid #2b354a;
+      padding: 6px 10px;
+      border-radius: 10px;
+      display: inline-block;
+      font-size: 12px;
+      margin: 2px;
+      cursor: pointer;
+    }
+
+    .mini-link:hover {
+      border-color: #4f8cff;
     }
 
     .footer {
@@ -406,7 +446,7 @@
     <div class="hero-box">
       <div class="hero-title">Ton tableau de bord FBA</div>
       <div class="hero-sub">
-        Recherche rapide sur les gros sites, scanner promos, calcul de profit, accès Amazon / Keepa / Resell Corner et analyse produit en 1 clic.
+        Recherche rapide, promos brutes, scanner rentabilité, calcul profit, ouverture source, Amazon, Resell Corner et analyse complète.
       </div>
 
       <div class="hero-stats">
@@ -420,7 +460,7 @@
         </div>
         <div class="hero-stat">
           <div class="hero-stat-label">Outils</div>
-          <div class="hero-stat-value">3+</div>
+          <div class="hero-stat-value">4+</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-label">Version</div>
@@ -437,7 +477,7 @@
     <div class="cards">
       <div class="card" id="scanner">
         <h2>Recherche produit</h2>
-        <div class="small-text">Choisis un magasin ou un site e-commerce puis ouvre directement la recherche.</div>
+        <div class="small-text">Choisis un magasin ou site e-commerce puis ouvre la recherche.</div>
 
         <input type="text" id="keyword" placeholder="Ex : lego, coffret manga, shampoing..." />
 
@@ -501,10 +541,11 @@
 
         <button onclick="searchProduct()">Rechercher sur le site choisi</button>
         <button class="promo-btn" onclick="scanDeals()">🔥 Scanner promos</button>
+        <button class="pink-btn" onclick="showRawPromos()">🛒 Voir promos brutes</button>
         <button class="red-btn" onclick="generateMoreDeals()">➕ Générer plus d'opportunités</button>
 
         <div class="warning">
-          Scanner promos = mode démo premium. Pour de vraies promos live, il faudra connecter de vraies sources plus tard.
+          Scanner promos = démo locale. Les liens “RC” ouvrent Resell Corner pour faire la recherche dans ton compte.
         </div>
 
         <div class="result" id="searchResult">Résultats ici...</div>
@@ -519,12 +560,12 @@
         <div class="quick-tools">
           <div class="quick-btn" onclick="openAmazonSearch()">Amazon</div>
           <div class="quick-btn" onclick="openKeepa()">Keepa</div>
-          <div class="quick-btn" onclick="openResell()">Resell Corner</div>
-          <div class="quick-btn" onclick="openFullAnalysis()">Analyse complète</div>
+          <div class="quick-btn" onclick="openResell()">RC</div>
+          <div class="quick-btn" onclick="openFullAnalysis()">Tout</div>
         </div>
 
         <div class="result" style="margin-top:16px;">
-          Ouvre Amazon + Keepa + Resell Corner en 1 clic pour aller plus vite.
+          Ouvre Amazon + Keepa + Resell Corner en 1 clic.
         </div>
       </div>
     </div>
@@ -533,7 +574,7 @@
 
     <div class="card">
       <h2>Calculateur FBA</h2>
-      <div class="small-text">Entre ton prix d’achat, le prix Amazon et les frais pour voir ton profit net.</div>
+      <div class="small-text">Entre ton prix d’achat, le prix Amazon et les frais.</div>
 
       <div class="grid-3">
         <input type="number" id="buyPrice" placeholder="Prix achat" />
@@ -585,16 +626,7 @@
       { name: "Lot cuisine", buy: 16.90, sell: 33.90, fees: 7.20, source: "Super U" }
     ];
 
-    function searchProduct() {
-      const keyword = document.getElementById("keyword").value.trim();
-      const marketplace = document.getElementById("marketplace").value;
-      const result = document.getElementById("searchResult");
-
-      if (!keyword) {
-        result.innerHTML = "Entre un produit pour lancer la recherche.";
-        return;
-      }
-
+    function getSearchBaseUrl(store) {
       const urls = {
         "Amazon": "https://www.amazon.fr/s?k=",
         "Cdiscount": "https://www.cdiscount.com/search/10/",
@@ -611,24 +643,24 @@
         "Vinted": "https://www.vinted.fr/catalog?search_text=",
         "Zalando": "https://www.zalando.fr/catalogue/?q=",
         "ManoMano": "https://www.manomano.fr/recherche/",
-        "Leroy Merlin": "https://www.leroymerlin.fr/recherche/?q=",
-        "Castorama": "https://www.castorama.fr/recherche?term=",
-        "Brico Dépôt": "https://www.bricodepot.fr/search?text=",
+        "Leroy Merlin": "https://www.google.com/search?q=site%3Aleroymerlin.fr+",
+        "Castorama": "https://www.google.com/search?q=site%3Acastorama.fr+",
+        "Brico Dépôt": "https://www.google.com/search?q=site%3Abricodepot.fr+",
         "Decathlon": "https://www.decathlon.fr/search?Ntt=",
-        "Intersport": "https://www.intersport.fr/recherche/",
-        "Action": "https://www.action.com/fr-fr/search/?q=",
-        "La Redoute": "https://www.laredoute.fr/ppdp/search.aspx?kwrd=",
-        "Conforama": "https://www.conforama.fr/recherche?text=",
-        "But": "https://www.but.fr/resultat-recherche/?q=",
+        "Intersport": "https://www.google.com/search?q=site%3Aintersport.fr+",
+        "Action": "https://www.google.com/search?q=site%3Aaction.com+",
+        "La Redoute": "https://www.google.com/search?q=site%3Alaredoute.fr+",
+        "Conforama": "https://www.google.com/search?q=site%3Aconforama.fr+",
+        "But": "https://www.google.com/search?q=site%3Abut.fr+",
         "IKEA": "https://www.ikea.com/fr/fr/search/?q=",
-        "King Jouet": "https://www.king-jouet.com/recherche?text=",
-        "JouéClub": "https://www.joueclub.fr/catalogsearch/result/?q=",
-        "Maxi Toys": "https://www.maxitoys.fr/catalogsearch/result/?q=",
-        "Micromania": "https://www.micromania.fr/recherche?text=",
-        "Cultura": "https://www.cultura.com/search/results?search_query=",
-        "E.Leclerc": "https://www.e.leclerc/recherche?q=",
+        "King Jouet": "https://www.google.com/search?q=site%3Aking-jouet.com+",
+        "JouéClub": "https://www.google.com/search?q=site%3Ajoueclub.fr+",
+        "Maxi Toys": "https://www.google.com/search?q=site%3Amaxitoys.fr+",
+        "Micromania": "https://www.google.com/search?q=site%3Amicromania.fr+",
+        "Cultura": "https://www.google.com/search?q=site%3Acultura.com+",
+        "E.Leclerc": "https://www.google.com/search?q=site%3Ae.leclerc+",
         "Carrefour": "https://www.carrefour.fr/s?q=",
-        "Auchan": "https://www.auchan.fr/recherche?text=",
+        "Auchan": "https://www.google.com/search?q=site%3Aauchan.fr+",
         "Intermarché": "https://www.google.com/search?q=site%3Aintermarche.com+",
         "Super U": "https://www.google.com/search?q=site%3Acoursesu.com+",
         "Monoprix": "https://www.google.com/search?q=site%3Amonoprix.fr+",
@@ -637,19 +669,42 @@
         "Aldi": "https://www.google.com/search?q=site%3Aaldi.fr+",
         "Picard": "https://www.picard.fr/recherche?q=",
         "Grand Frais": "https://www.google.com/search?q=site%3Agrandfrais.com+",
-        "Costco": "https://www.costco.fr/search?text=",
-        "Sephora": "https://www.sephora.fr/recherche?text=",
-        "Nocibé": "https://www.nocibe.fr/search?text=",
-        "Marionnaud": "https://www.marionnaud.fr/search?text=",
-        "Notino": "https://www.notino.fr/search.asp?exps=",
+        "Costco": "https://www.google.com/search?q=site%3Acostco.fr+",
+        "Sephora": "https://www.google.com/search?q=site%3Asephora.fr+",
+        "Nocibé": "https://www.google.com/search?q=site%3Anocibe.fr+",
+        "Marionnaud": "https://www.google.com/search?q=site%3Amarionnaud.fr+",
+        "Notino": "https://www.google.com/search?q=site%3Anotino.fr+",
         "Pharmacie / Parapharmacie": "https://www.google.com/search?q=parapharmacie+",
         "Google Shopping": "https://www.google.com/search?tbm=shop&q=",
         "Autre site e-commerce": "https://www.google.com/search?q="
       };
 
-      const baseUrl = urls[marketplace] || "https://www.google.com/search?q=";
-      const finalUrl = baseUrl + encodeURIComponent(keyword);
+      return urls[store] || "https://www.google.com/search?q=";
+    }
 
+    function makeProductUrl(productName, source) {
+      return getSearchBaseUrl(source) + encodeURIComponent(productName);
+    }
+
+    function getResellCornerUrl(query) {
+      const clean = (query || "").trim();
+      if (!clean) {
+        return "https://www.resellcorner.io/";
+      }
+      return "https://www.resellcorner.io/";
+    }
+
+    function searchProduct() {
+      const keyword = document.getElementById("keyword").value.trim();
+      const marketplace = document.getElementById("marketplace").value;
+      const result = document.getElementById("searchResult");
+
+      if (!keyword) {
+        result.innerHTML = "Entre un produit pour lancer la recherche.";
+        return;
+      }
+
+      const finalUrl = getSearchBaseUrl(marketplace) + encodeURIComponent(keyword);
       result.innerHTML = "Recherche ouverte sur <b>" + marketplace + "</b> pour : <b>" + keyword + "</b>";
       window.open(finalUrl, "_blank");
     }
@@ -664,22 +719,25 @@
         baseKeywords + " édition spéciale",
         baseKeywords + " pack x2",
         baseKeywords + " promo",
-        baseKeywords + " bundle"
+        baseKeywords + " bundle",
+        baseKeywords + " x3",
+        baseKeywords + " découverte"
       ];
 
       const stores = [
         "Amazon", "Cdiscount", "Fnac", "Carrefour",
         "E.Leclerc", "Intermarché", "Auchan", "Super U",
-        "Boulanger", "Micromania", "Action", "Rakuten"
+        "Boulanger", "Micromania", "Action", "Rakuten",
+        "King Jouet", "Sephora", "Cultura", "Decathlon"
       ];
 
       let generated = [];
 
-      for (let i = 0; i < 24; i++) {
-        const buy = +(6 + Math.random() * 30).toFixed(2);
-        const multiplier = 1.42 + Math.random() * 1.20;
+      for (let i = 0; i < 36; i++) {
+        const buy = +(5 + Math.random() * 32).toFixed(2);
+        const multiplier = 1.35 + Math.random() * 1.35;
         const sell = +(buy * multiplier).toFixed(2);
-        const fees = +(3.8 + Math.random() * 7).toFixed(2);
+        const fees = +(3.2 + Math.random() * 7.4).toFixed(2);
 
         generated.push({
           name: brands[i % brands.length] + " " + (i + 1),
@@ -697,6 +755,73 @@
     function generateMoreDeals() {
       const keyword = document.getElementById("keyword").value.trim();
       buildDealsFromKeyword(keyword);
+    }
+
+    function showRawPromos() {
+      const result = document.getElementById("searchResult");
+      result.innerHTML = "Chargement des promos brutes... 🛒";
+
+      setTimeout(() => {
+        let html = `
+          <div class="stats">
+            <div class="stat-box">
+              <div class="label">Promos trouvées</div>
+              <div class="value">${demoDeals.length}</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Prix achat min</div>
+              <div class="value">${Math.min(...demoDeals.map(d => d.buy)).toFixed(2)}€</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Prix achat max</div>
+              <div class="value">${Math.max(...demoDeals.map(d => d.buy)).toFixed(2)}€</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Sources</div>
+              <div class="value">${new Set(demoDeals.map(d => d.source)).size}</div>
+            </div>
+          </div>
+
+          <table>
+            <tr>
+              <th>Produit</th>
+              <th>Source</th>
+              <th>Prix promo</th>
+              <th>Prix Amazon estimé</th>
+              <th>Source</th>
+              <th>Amazon</th>
+              <th>RC</th>
+              <th>Tout</th>
+              <th>Type</th>
+            </tr>
+        `;
+
+        for (let i = 0; i < demoDeals.length; i++) {
+          const deal = demoDeals[i];
+          const sourceUrl = makeProductUrl(deal.name, deal.source);
+          const amazonUrl = "https://www.amazon.fr/s?k=" + encodeURIComponent(deal.name);
+          const rcUrl = getResellCornerUrl(deal.name);
+
+          html += `
+            <tr>
+              <td><a class="product-link" href="${rcUrl}" target="_blank">${deal.name}</a></td>
+              <td>${deal.source}</td>
+              <td>${deal.buy.toFixed(2)}€</td>
+              <td>${deal.sell.toFixed(2)}€</td>
+              <td><a class="mini-link" href="${sourceUrl}" target="_blank">Source</a></td>
+              <td><a class="mini-link" href="${amazonUrl}" target="_blank">Amazon</a></td>
+              <td><a class="mini-link" href="${rcUrl}" target="_blank">RC</a></td>
+              <td>
+                <span class="mini-link" onclick="openRowAnalysis('${encodeURIComponent(deal.name)}', '${encodeURIComponent(deal.source)}')">Tout</span>
+              </td>
+              <td><span class="promo-only">Promo brute</span></td>
+            </tr>
+          `;
+        }
+
+        html += `</table>`;
+        result.innerHTML = html;
+      }, 500);
     }
 
     function scanDeals() {
@@ -768,22 +893,35 @@
               <th>Frais</th>
               <th>Profit</th>
               <th>ROI</th>
+              <th>Source</th>
+              <th>Amazon</th>
+              <th>RC</th>
+              <th>Tout</th>
               <th>Statut</th>
             </tr>
         `;
 
         for (let i = 0; i < filteredDeals.length; i++) {
           const deal = filteredDeals[i];
+          const sourceUrl = makeProductUrl(deal.name, deal.source);
+          const amazonUrl = "https://www.amazon.fr/s?k=" + encodeURIComponent(deal.name);
+          const rcUrl = getResellCornerUrl(deal.name);
 
           html += `
             <tr>
-              <td>${deal.name}</td>
+              <td><a class="product-link" href="${rcUrl}" target="_blank">${deal.name}</a></td>
               <td>${deal.source}</td>
               <td>${deal.buy.toFixed(2)}€</td>
               <td>${deal.sell.toFixed(2)}€</td>
               <td>${deal.fees.toFixed(2)}€</td>
               <td class="${deal.profit >= 0 ? "profit-positive" : "profit-negative"}">${deal.profit.toFixed(2)}€</td>
               <td><b>${deal.roi.toFixed(1)}%</b></td>
+              <td><a class="mini-link" href="${sourceUrl}" target="_blank">Source</a></td>
+              <td><a class="mini-link" href="${amazonUrl}" target="_blank">Amazon</a></td>
+              <td><a class="mini-link" href="${rcUrl}" target="_blank">RC</a></td>
+              <td>
+                <span class="mini-link" onclick="openRowAnalysis('${encodeURIComponent(deal.name)}', '${encodeURIComponent(deal.source)}')">Tout</span>
+              </td>
               <td>
                 ${
                   i === 0
@@ -816,6 +954,19 @@
       `;
     }
 
+    function openRowAnalysis(encodedName, encodedSource) {
+      const name = decodeURIComponent(encodedName);
+      const source = decodeURIComponent(encodedSource);
+
+      const sourceUrl = makeProductUrl(name, source);
+      const amazonUrl = "https://www.amazon.fr/s?k=" + encodeURIComponent(name);
+      const rcUrl = getResellCornerUrl(name);
+
+      window.open(sourceUrl, "_blank");
+      window.open(amazonUrl, "_blank");
+      window.open(rcUrl, "_blank");
+    }
+
     function getToolValue() {
       return document.getElementById("toolInput").value.trim();
     }
@@ -840,7 +991,7 @@
         return;
       }
 
-      const url = "https://www.resellcorner.com/search?q=" + encodeURIComponent(query);
+      const url = getResellCornerUrl(query);
       window.open(url, "_blank");
     }
 
